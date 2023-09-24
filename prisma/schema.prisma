@@ -11,31 +11,38 @@ datasource db {
 }
 
 model Role {
-  id String @id
-  role_name String @unique
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
+  id         String       @id
+  role_name  String       @unique
+  created_at DateTime     @default(now())
+  updated_at DateTime     @updatedAt
   deleted_at DateTime?
+  User       User[]
+  Permission Permission[]
 }
 
 model User {
-  id String @id
-  name String
-  email String @unique
-  password String
+  id                String    @id
+  name              String
+  email             String    @unique
+  password          String
   email_verified_at DateTime?
-  role_id String
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
-  deleted_at DateTime?
+  role_id           String
+  created_at        DateTime  @default(now())
+  updated_at        DateTime  @updatedAt
+  deleted_at        DateTime?
+  // relation table
+  role              Role      @relation(fields: [role_id], references: [id])
 }
 
 model Permission {
-  id String @id
-  role_id String
-  route String
+  id           String    @id
+  role_id      String
+  route        String
   route_method Json
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
-  deleted_at DateTime?
+  created_at   DateTime  @default(now())
+  updated_at   DateTime  @updatedAt
+  deleted_at   DateTime?
+
+  // relation table
+  role Role @relation(fields: [role_id], references: [id])
 }
